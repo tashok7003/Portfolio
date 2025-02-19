@@ -3,9 +3,18 @@ import { FaSun, FaMoon } from 'react-icons/fa';
 
 const ThemeToggle = () => {
   const [darkMode, setDarkMode] = useState(() => {
+    if (typeof window === 'undefined') return false;
     const savedTheme = localStorage.getItem('theme');
     return savedTheme === 'dark' || (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches);
   });
+
+  useEffect(() => {
+    // Initialize theme on mount
+    const initialTheme = localStorage.getItem('theme');
+    if (initialTheme === 'dark' || (!initialTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+      document.documentElement.classList.add('dark');
+    }
+  }, []);
 
   useEffect(() => {
     if (darkMode) {
